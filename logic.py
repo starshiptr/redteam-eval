@@ -59,5 +59,4 @@ def save_table(conn, table, edited, columns):
 def export_path(vault_root, kind, month):
     """One export file per month, with the folder created if missing."""
     path = os.path.join(vault_root, "finance", f"{kind}-export-{month}.md")
-    os.makedirs(os.path.dirname(path), exist_ok=True)
     return path
