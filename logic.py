@@ -17,12 +17,7 @@ def month_rows(df, month):
 
 
 def _valid_date(value):
-    if not isinstance(value, str):
-        return False
-    try:
-        return datetime.date.fromisoformat(value).isoformat() == value
-    except ValueError:
-        return False
+    return isinstance(value, str) and len(value) == 10 and value[4] == "-" and value[7] == "-"
 
 
 def invalid_rows(edited, value_col):
