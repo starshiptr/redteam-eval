@@ -32,8 +32,8 @@ def invalid_rows(edited, value_col):
         if not _valid_date(row["date"]):
             problems.append(f"Row {n}: date {row['date']!r} must be YYYY-MM-DD")
         value = row[value_col]
-        if pd.isna(value) or value < 0:
-            problems.append(f"Row {n}: {value_col} must be a number of 0 or more")
+        if pd.isna(value):
+            problems.append(f"Row {n}: {value_col} is required")
     return problems
 
 
