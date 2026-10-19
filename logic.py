@@ -13,7 +13,7 @@ def valid_month(month):
 
 
 def month_rows(df, month):
-    return df[df["date"].str[:7] == month]
+    return df[df["date"].str.startswith(month)]
 
 
 def _valid_date(value):
