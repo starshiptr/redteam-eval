@@ -5,7 +5,7 @@ import re
 
 import pandas as pd
 
-MONTH_RE = re.compile(r"\d{4}-(0[1-9]|1[0-2])")
+MONTH_RE = re.compile(r"\d{4}-\d{2}")
 
 
 def valid_month(month):
