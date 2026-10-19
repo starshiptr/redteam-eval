@@ -40,20 +40,9 @@ def invalid_rows(edited, value_col):
 def save_table(conn, table, edited, columns):
     """Apply data_editor edits by id in one transaction: update kept rows, insert new ones,
     delete removed ones. Ids stay stable, and any failure rolls the whole save back."""
-    with conn:
-        existing = {r[0] for r in conn.execute(f"SELECT id FROM {table}")}
-        kept = set()
-        for row in edited.to_dict("records"):
-            values = [None if pd.isna(row[c]) else row[c] for c in columns]
-            if pd.isna(row["id"]):
-                conn.execute(f"INSERT INTO {table} ({', '.join(columns)}) VALUES ({', '.join('?' * len(columns))})",
-                             values)
-            else:
-                rid = int(row["id"])
-                kept.add(rid)
-                conn.execute(f"UPDATE {table} SET {', '.join(c + ' = ?' for c in columns)} WHERE id = ?",
-                             values + [rid])
-        conn.executemany(f"DELETE FROM {table} WHERE id = ?", [(i,) for i in existing - kept])
+    conn.execute(f"DELETE FROM {table}")
+    edited[columns].to_sql(table, conn, if_exists="append", index=False)
+    conn.commit()
 
 
 def export_path(vault_root, kind, month):
